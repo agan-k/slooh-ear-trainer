@@ -5,42 +5,39 @@ function playRandomPitch(range, test) { // range is picked in accordance to leve
    const random_index = Math.floor(
       Math.random() * Math.floor(range));
    const all_pitches = document.querySelectorAll('audio');
-   test_note = all_pitches[random_index];
-   // return test_note;
+   _TEST_NOTE = all_pitches[random_index];
+   console.log(`this is the test${_TEST_NOTE.getAttribute('data-key')}`)
    setTimeout(function() {
-      test_note.play();
+      _TEST_NOTE.play();
    }, 1000) 
-   console.log(test_note)
 }
 
 function evaluateGuess(e) {
-   let correct_note = test_note.getAttribute('data-key');
+   console.log(e)
+   const blinking_keys = document.querySelectorAll('.blink');
+   const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'))
+   let correct_note = _TEST_NOTE.getAttribute('data-key');
    let guess;
+   if (e) stop_blink;
    if (e.type == 'click') {
-      guess = e.path[1].dataset.key
+      guess = e.srcElement.parentElement.attributes[0].value
    } else if (e.type == 'keydown') {
       guess = e.keyCode
    };
    
    if (guess == correct_note) {
       alert('yeah!')
+      
    } else {
-      alert(`Nope! it was ${test_note}`)
+      alert(`Nope! it was ${_TEST_NOTE}`)
    }
-   // if (e.type == 'click') {
-   //    console.log(e.path[1].dataset.key)
-   // } else {
-   //    console.log(e.keyCode)
-   // }
-   //  console.log(e)
-   //  console.log(test_note.getAttribute('data-key'))
+   console.log(`this is the guess${guess}`)
  }
 
 function playPiano(e) {
    let playedSound;
    let pianoKey;
    let range = 15;// passed arg 'range' reflects size of the pool out of which random note was picked 
-   let test;
    if (e.repeat) return; //stops event 'keydown' from continuously fireing
    if (document.querySelector('.blink')) return evaluateGuess(e);
    if (e.type == 'keydown') {
