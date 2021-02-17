@@ -7,7 +7,7 @@ html {
    padding: 0;
    font-family: sans-serif;
  }
- .ebony-ivory-together {
+ .piano {
     position: relative;
     margin: 0 auto;
     width: min-content;
@@ -88,3 +88,19 @@ html {
    letter-spacing: .1rem;
    color: #ffc600;
  }
+ /* +++++==========++++++ */
+.mode-selector {
+   width: 53rem;
+   min-height: 20rem;
+   margin: 0 auto;
+   padding: 3rem 1rem;
+   text-align: center;
+   background-color: rgb(219, 218, 200);
+}
+.mode-selector button {
+   font-size: 2rem;
+   color: blue;
+   padding: 1rem;
+   border: none;
+   cursor: pointer;
+}

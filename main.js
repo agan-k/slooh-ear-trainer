@@ -8,16 +8,21 @@ function playRandomPitch(range) {// range is picked in accordance to level diffi
       Math.random() * Math.floor(range))
     
    const all_pitches = document.querySelectorAll('audio')
+   const random_note = all_pitches[random_index]
+
+
    
    setTimeout(function() {
-      return all_pitches[random_index].play();
-    }, 1000)
+      return random_note.play();
+   }, 1000)
+
+
 }
 
 function playPiano(e) {
    let playedSound;
    let pianoKey;
-   if (e.repeat) return; //stops event 'keydown' from continous fireing
+   if (e.repeat) return; //stops event 'keydown' from continuously fireing
    if (e.type == 'keydown') {
       playedSound = document.querySelector(`audio[data-key="${e.keyCode}"]`);
       pianoKey = document.querySelector(`.key[data-key="${e.keyCode}"]`);
@@ -29,8 +34,8 @@ function playPiano(e) {
    playedSound.currentTime = 0; 
    playedSound.play();
    pianoKey.classList.add('finger-down');// Transition style for pressed piano key
-   if (!document.querySelector('.ebony-ivory-together.et-mode')) return; // activate ear-trainer mode
-   playRandomPitch(15);
+   if (!document.querySelector('.piano.et-mode')) return; // activate ear-trainer mode
+   playRandomPitch(15); // passed arg num reflects size of the pool out of which random note was picked 
 }
 
 const pianoKeys = document.querySelectorAll('.key');
@@ -45,6 +50,17 @@ pianoKeys.forEach(pianoKey => pianoKey.addEventListener('transitionend', fingerU
 
 window.addEventListener('keydown', playPiano);
 window.addEventListener('click', playPiano);
+
+function toggleEarTrainMode() {
+   const piano = document.querySelector('.piano');
+   piano.classList.toggle('et-mode');
+   const button = document.getElementById('et-mode-toggle');
+   if (button.innerHTML === 'start') {
+      button.innerHTML = 'exit';
+   } else {
+      button.innerHTML = 'start';
+   }
+}
 
 
 
