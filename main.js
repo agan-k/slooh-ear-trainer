@@ -1,6 +1,3 @@
-
-
-
 function playRandomPitch(range, test) { // range is picked in accordance to level difficulty. Choices of different Node lists could unlock different levels. (diatonic, chromatic, number of octaves etc.)
    const random_index = Math.floor(
       Math.random() * Math.floor(range));
@@ -12,9 +9,6 @@ function playRandomPitch(range, test) { // range is picked in accordance to leve
 }
 
 function evaluateGuess(e) {
-   // console.log(e.target)
-   // console.log(e)
-   // debugger
 
    const blinking_keys = document.querySelectorAll('.blink');
    const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'));
@@ -30,11 +24,7 @@ function evaluateGuess(e) {
    let valid_input_click;
       if (e.path[1].classList.contains('key')) {
          valid_input_click = true
-      }
-      // else if (e.path[0].attributes.type.value == 'button') {
-      //    return;
-      // }
-      else {
+      } else {
          false
       }
 
@@ -42,14 +32,6 @@ function evaluateGuess(e) {
    if (e) stop_blink;
 
    //check for validity of input and assign value to guess variable
-
-   // if (e.type == 'click' && valid_input_click) {
-   //    guess = e.path[1].attributes[0].value;
-   // } else if (e.type == 'keydown' && valid_input_keydown.includes(e.keyCode.toString()) == true) {
-   //    guess = e.keyCode.toString();
-   // } else {
-   //    return alert('Invalid input at guess.init')
-   // }
    if (e.type == 'keydown' && valid_input_keydown.includes(e.keyCode.toString()) == true) {
       guess = e.keyCode.toString();
    } else if (e.type == 'click' && valid_input_click) {
@@ -57,10 +39,6 @@ function evaluateGuess(e) {
    } else {
       return alert('Invalid input at guess.init')
    }
-
-
-   // console.log(valid_input_keydown.includes(e.keyCode).toString())
-   // debugger
    ////////////////////////////////////////////////////////////////////
    
    //pass  this value of 'answers' only to be displayed for comparing user's input.
