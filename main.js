@@ -6,33 +6,78 @@ function playRandomPitch(range, test) { // range is picked in accordance to leve
       Math.random() * Math.floor(range));
    const all_pitches = document.querySelectorAll('audio');
    _TEST_NOTE = all_pitches[random_index];
-   console.log(`this is the test${_TEST_NOTE.getAttribute('data-key')}`)
    setTimeout(function() {
       _TEST_NOTE.play();
    }, 1000) 
 }
 
 function evaluateGuess(e) {
-   console.log(e)
+   // console.log(e.target)
+   // console.log(e)
+   // debugger
+
    const blinking_keys = document.querySelectorAll('.blink');
-   const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'))
-   let correct_note = _TEST_NOTE.getAttribute('data-key');
+   const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'));
+   let test_note = _TEST_NOTE.getAttribute('data-key');
+   let correct_answer;
+   let wrong_answer;
    let guess;
+
+
+
+   // let valid_input = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75, 79, 76];
+   let valid_input_keydown = ['65', '87', '83', '69', '68', '70', '84', '71', '89', '72', '85', '74', '75', '79', '76'];
+   let valid_input_click;
+      if (e.path[1].classList.contains('key')) {
+         valid_input_click = true
+      }
+      // else if (e.path[0].attributes.type.value == 'button') {
+      //    return;
+      // }
+      else {
+         false
+      }
+
+   // input comes in from when playPiano(); calls evaluateGuess(e);
    if (e) stop_blink;
-   if (e.type == 'click') {
-      guess = e.srcElement.parentElement.attributes[0].value
-   } else if (e.type == 'keydown') {
-      guess = e.keyCode
-   };
-   
-   if (guess == correct_note) {
-      alert('yeah!')
-      
+
+   //check for validity of input and assign value to guess variable
+
+   // if (e.type == 'click' && valid_input_click) {
+   //    guess = e.path[1].attributes[0].value;
+   // } else if (e.type == 'keydown' && valid_input_keydown.includes(e.keyCode.toString()) == true) {
+   //    guess = e.keyCode.toString();
+   // } else {
+   //    return alert('Invalid input at guess.init')
+   // }
+   if (e.type == 'keydown' && valid_input_keydown.includes(e.keyCode.toString()) == true) {
+      guess = e.keyCode.toString();
+   } else if (e.type == 'click' && valid_input_click) {
+      guess = e.path[1].attributes[0].value;
    } else {
-      alert(`Nope! it was ${_TEST_NOTE}`)
+      return alert('Invalid input at guess.init')
    }
-   console.log(`this is the guess${guess}`)
- }
+
+
+   // console.log(valid_input_keydown.includes(e.keyCode).toString())
+   // debugger
+   ////////////////////////////////////////////////////////////////////
+   
+   //pass  this value of 'answers' only to be displayed for comparing user's input.
+   correct_answer = document.
+      querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
+   wrong_answer = document.
+      querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
+   ///////////////////////////////////////////////////////////////////////////
+
+   //this block evaluates the guess
+   if (guess == test_note) {
+      alert(`Yes, it was "${correct_answer}". Nice work!`)
+   } else if (guess !== test_note) {
+      alert(`"${wrong_answer}"!? Nah, it was "${correct_answer}"`)
+   };
+   /////////////////////////////////////////////////////////////////////////////
+};
 
 function playPiano(e) {
    let playedSound;
@@ -43,14 +88,14 @@ function playPiano(e) {
    if (e.type == 'keydown') {
       playedSound = document.querySelector(`audio[data-key="${e.keyCode}"]`);
       pianoKey = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-   } else {
+   } else if (e.type = 'click') {
       playedSound = document.querySelector(`audio[data-key="${e.path[0].attributes[0].value}"]`)
       pianoKey = document.querySelector(`.key[data-key="${e.path[0].attributes[0].value}"]`)
    };
    if (!playedSound) return; //exits function if computer keys without assigned sound pressed
+   pianoKey.classList.add('finger-down');// Transition style for pressed piano key
    playedSound.currentTime = 0; // rewinds before entire audio sample (ca 4s) rings out
    playedSound.play();
-   pianoKey.classList.add('finger-down');// Transition style for pressed piano key
    if (!document.querySelector('.piano.et-mode')) return; // if Ear Train mode not active, exit function
    playRandomPitch(range); 
    blinkAll();
@@ -70,7 +115,7 @@ function toggleEarTrainMode() {
    if (button.innerHTML === 'start') {
       button.innerHTML = 'exit';
    } else {
-      location.reload()
+      location.reload();
    }
 }
 
